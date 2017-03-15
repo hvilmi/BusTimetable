@@ -7,10 +7,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,24 +34,32 @@ public class BusLineFinder {
 
         RequestQueue mQueue = Volley.newRequestQueue(mContext);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
 
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONArray routes = response.getJSONArray("routes");
+                        Log.v("test", response.toString());
+                        JSONArray routes = null;
+                        try {
 
-                        for(int i=0;i < routes.length();i++) {
-                            JSONArray legs = routes.getJSONObject(i).getJSONArray();
-                            ArrayList<String> busLines = new ArrayList<String>();
-                            for(int j=0;j > legs.length();j++) {
-                                JSONObject leg = legs.getJSONObject(j);
-                                if(leg.getString("travel_mode") == "TRANSIT") {
-                                    
+                            routes = response.getJSONArray("routes");
+                            for(int i=0;i < routes.length();i++) {
+                                JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
+                                ArrayList<String> busLines = new ArrayList<String>();
+                                for(int j=0;j > legs.length();j++) {
+                                    JSONObject leg = legs.getJSONObject(j);
+                                    if(leg.getString("travel_mode") == "TRANSIT") {
+                                        Log.e("Volley Error", "Test");
+                                    }
                                 }
                             }
                         }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -60,7 +70,7 @@ public class BusLineFinder {
                 }
         );
 
-        mQueue.add(stringRequest);
+        mQueue.add(jsonObjectRequest);
 
     }
 

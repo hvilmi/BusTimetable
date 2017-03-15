@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        BusLineFinder testObject = new BusLineFinder();
+        testObject.getBusLine("disneyland", "disneyland");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String place = "disneyland";
