@@ -34,41 +34,41 @@ public class BusLineFinder {
 
         RequestQueue mQueue = Volley.newRequestQueue(mContext);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, null, url,
                 new Response.Listener<JSONObject>() {
 
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.v("test", response.toString());
-                        JSONArray routes = null;
-                        try {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.v("test", response.toString());
+                                JSONArray routes = null;
+                                try {
 
-                            routes = response.getJSONArray("routes");
-                            for(int i=0;i < routes.length();i++) {
-                                JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
-                                ArrayList<String> busLines = new ArrayList<String>();
-                                for(int j=0;j > legs.length();j++) {
-                                    JSONObject leg = legs.getJSONObject(j);
-                                    if(leg.getString("travel_mode") == "TRANSIT") {
-                                        Log.e("Volley Error", "Test");
+                                    routes = response.getJSONArray("routes");
+                                    for(int i=0;i < routes.length();i++) {
+                                        JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
+                                        ArrayList<String> busLines = new ArrayList<String>();
+                                        for(int j=0;j > legs.length();j++) {
+                                            JSONObject leg = legs.getJSONObject(j);
+                                            if(leg.getString("travel_mode") == "TRANSIT") {
+                                                Log.e("Volley Error", "Test");
+                                            }
+                                        }
                                     }
                                 }
+                                catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("Volley Error", "Error with Volley request");
                             }
                         }
-                        catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley Error", "Error with Volley request");
-                    }
-                }
-        );
+                );
 
         mQueue.add(jsonObjectRequest);
 
