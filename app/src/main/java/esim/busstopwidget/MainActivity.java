@@ -12,8 +12,7 @@ import com.google.android.gms.location.places.Place;
 
 public class MainActivity extends AppCompatActivity {
     GoogleApiClient mGoogleApiClient;
-    String base="https://maps.googleapis.com/maps/api/directions/json?";
-
+    String base = "https://maps.googleapis.com/maps/api/directions/json?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         String place = "disneyland";
         base=base+"origin="+place;
-
 
     }
 }

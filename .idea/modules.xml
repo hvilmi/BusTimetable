@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BusStopWidget.iml" filepath="$PROJECT_DIR$/BusStopWidget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BusTimetable.iml" filepath="$PROJECT_DIR$/BusTimetable.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
