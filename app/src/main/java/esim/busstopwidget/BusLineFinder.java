@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Hannes on 9.3.2017.
@@ -34,25 +35,37 @@ public class BusLineFinder {
 
         RequestQueue mQueue = Volley.newRequestQueue(mContext);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, null, url,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
                 new Response.Listener<JSONObject>() {
 
 
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.v("test", response.toString());
-                                JSONArray routes = null;
+                                JSONArray routes;
                                 try {
 
                                     routes = response.getJSONArray("routes");
                                     for(int i=0;i < routes.length();i++) {
                                         JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
-                                        ArrayList<String> busLines = new ArrayList<String>();
-                                        for(int j=0;j > legs.length();j++) {
-                                            JSONObject leg = legs.getJSONObject(j);
-                                            if(leg.getString("travel_mode") == "TRANSIT") {
-                                                Log.e("Volley Error", "Test");
+                                        for(int j=0;j < legs.length();j++) {
+                                            JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
+                                            for(int k=0;k < steps.length();k++) {
+                                                JSONObject step = steps.getJSONObject(k);
+                                                if(Objects.equals(step.getString("tavel_mode"), "TRANSIT")) {
+                                                    JSONObject busLineDetails = step.getJSONObject("transit_details");
+                                                    BusLineInfo busLineInfo = new BusLineInfo(busLineDetails.getJSONObject("line").getString("short_name"),
+                                                            busLineDetails.getJSONObject("line").getString("name"),
+                                                            busLineDetails.getJSONObject("departure_time").getString("text"),
+                                                            busLineDetails.getJSONObject("arrival_time").getString("text"));
+                                                }
+                                                else if(Objects.equals(step.getString("travel_mode"), "WALKING")) {
+                                                    JSONObject walkDistance = step.getJSONObject("distance");
+                                                    //walkDistance sisältää kentät text (etäisyys String-muodossa, esim 0.4 km) ja value (kokonaislukuna metreissä, esim 389)
+
+                                                }
                                             }
+
                                         }
                                     }
                                 }
