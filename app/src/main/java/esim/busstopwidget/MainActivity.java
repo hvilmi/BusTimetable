@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private BusLineFinder busLineFinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         String place = "disneyland";
         base = base + "origin=" + place;
+
+        busLineFinder = new BusLineFinder();
 
     }
 
@@ -78,6 +81,19 @@ public class MainActivity extends AppCompatActivity {
 
             case 2:
         }
+    }
+
+    public void displayBusLines(BusLineInfoContainer busLines) {
+        for(int i=0;i<busLines.getSize();i++) {
+            //Näyttää ennalta määrätyn määrän bussilinjoja
+            BusLineInfo busLineInfo = busLines.getBusLine(i);
+
+        }
+    }
+
+    public void getBusLinesFromCurLocation(String endLocation) {
+        String latLngString = getLocation().toString();
+        busLineFinder.getBusLine(latLngString, endLocation);
     }
 
 

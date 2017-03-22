@@ -8,14 +8,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -44,7 +42,7 @@ public class BusLineFinder {
                                 Log.v("test", response.toString());
                                 JSONArray routes;
                                 try {
-
+                                    BusLineInfoContainer busLineInfoContainer = new BusLineInfoContainer();
                                     routes = response.getJSONArray("routes");
                                     for(int i=0;i < routes.length();i++) {
                                         JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
@@ -57,7 +55,10 @@ public class BusLineFinder {
                                                     BusLineInfo busLineInfo = new BusLineInfo(busLineDetails.getJSONObject("line").getString("short_name"),
                                                             busLineDetails.getJSONObject("line").getString("name"),
                                                             busLineDetails.getJSONObject("departure_time").getString("text"),
-                                                            busLineDetails.getJSONObject("arrival_time").getString("text"));
+                                                            busLineDetails.getJSONObject("arrival_time").getString("text"),
+                                                            busLineDetails.getJSONObject("departure_stop").getString("name"),
+                                                            busLineDetails.getJSONObject("arrival_stop").getString("name"));
+                                                    busLineInfoContainer.addBusLine(busLineInfo);
                                                 }
                                                 else if(Objects.equals(step.getString("travel_mode"), "WALKING")) {
                                                     JSONObject walkDistance = step.getJSONObject("distance");
@@ -68,6 +69,8 @@ public class BusLineFinder {
 
                                         }
                                     }
+                                    MainActivity mainActivity = (MainActivity) mContext;
+                                    mainActivity.displayBusLines(busLineInfoContainer);
                                 }
                                 catch (JSONException e) {
                                     e.printStackTrace();
