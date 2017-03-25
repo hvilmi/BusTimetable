@@ -10,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -26,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity {
 
-    String base = "https://maps.googleapis.com/maps/api/directions/json?";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -36,20 +38,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        BusLineFinder testObject = new BusLineFinder();
-        testObject.getBusLine("disneyland", "disneyland");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String place = "disneyland";
-        base = base + "origin=" + place;
 
-        busLineFinder = new BusLineFinder();
+        busLineFinder = new BusLineFinder(this);
 
     }
 
     // gps
     public LatLng getLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String bestProvider = locationManager.getBestProvider(criteria, false);
         // Tarkistetaan lupa
@@ -66,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         Location location = locationManager.getLastKnownLocation(bestProvider);
         Double lat, lon;
         try {
+            Log.d("location",location.toString());
             lat = location.getLatitude();
             lon = location.getLongitude();
             return new LatLng(lat, lon);
@@ -84,17 +83,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayBusLines(BusLineInfoContainer busLines) {
+        Log.d("line amount", Integer.toString(busLines.getSize()));
         for(int i=0;i<busLines.getSize();i++) {
             //Näyttää ennalta määrätyn määrän bussilinjoja
             BusLineInfo busLineInfo = busLines.getBusLine(i);
+            TextView text = (TextView) this.findViewById(R.id.busInfo);
+            text.setText(busLineInfo.getDepartureStop()+"["+ busLineInfo.getShortName()+"]->"+busLineInfo.getArrivalStop()+"\n");
 
         }
     }
 
     public void getBusLinesFromCurLocation(String endLocation) {
-        String latLngString = getLocation().toString();
-        busLineFinder.getBusLine(latLngString, endLocation);
+        LatLng location = getLocation();
+        if (!(location==null)) {
+            String latLngString = Double.toString(location.latitude) +","+ Double.toString(location.longitude);
+            busLineFinder.getBusLine(latLngString, endLocation);
+        }
     }
 
 
+    public void testBusLine(View view) {
+        getBusLinesFromCurLocation("Toripakka+E");
+    }
 }

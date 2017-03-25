@@ -22,14 +22,17 @@ import java.util.Objects;
 
 public class BusLineFinder {
     private Context mContext;
+    MainActivity mainActivity;
 
-    public BusLineFinder() {
-
+    public BusLineFinder(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+        mContext = mainActivity.getApplicationContext();
     }
+
 
     public void getBusLine(String startLocation, String endLocation) {
         String url = "https://maps.googleapis.com/maps/api/directions/json?";
-        url = url + "origin=" + startLocation + "&destination=" + endLocation;
+        url = url + "origin=" + startLocation + "&destination=" + endLocation +"&mode=transit&key=AIzaSyBN2rnahDKnRnQpFQOGUC_S123FeRy6shE";
 
         RequestQueue mQueue = Volley.newRequestQueue(mContext);
 
@@ -50,7 +53,7 @@ public class BusLineFinder {
                                             JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
                                             for(int k=0;k < steps.length();k++) {
                                                 JSONObject step = steps.getJSONObject(k);
-                                                if(Objects.equals(step.getString("tavel_mode"), "TRANSIT")) {
+                                                if(Objects.equals(step.getString("travel_mode"), "TRANSIT")) {
                                                     JSONObject busLineDetails = step.getJSONObject("transit_details");
                                                     BusLineInfo busLineInfo = new BusLineInfo(busLineDetails.getJSONObject("line").getString("short_name"),
                                                             busLineDetails.getJSONObject("line").getString("name"),
@@ -69,7 +72,7 @@ public class BusLineFinder {
 
                                         }
                                     }
-                                    MainActivity mainActivity = (MainActivity) mContext;
+
                                     mainActivity.displayBusLines(busLineInfoContainer);
                                 }
                                 catch (JSONException e) {
