@@ -14,12 +14,11 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="56dp"
         android:text="Button"
-        android:onClick="testBusLine"/>
+        android:onClick="startBusLineService"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/busInfo" />
 
     <TextView
         android:id="@+id/busInfo"
@@ -29,5 +28,15 @@
         android:layout_marginStart="51dp"
         android:layout_marginTop="65dp"
         android:text="TextView" />
+
+    <EditText
+        android:id="@+id/destinationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/button2"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 
 </RelativeLayout>

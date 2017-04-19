@@ -1,12 +1,13 @@
 package esim.busstopwidget;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by hvilmi on 22.3.2017.
  */
 
-public class BusLineInfoContainer {
+public class BusLineInfoContainer implements Serializable {
 
     private ArrayList<BusLineInfo> busLines;
 

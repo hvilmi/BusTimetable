@@ -1,10 +1,12 @@
 package esim.busstopwidget;
 
+import java.io.Serializable;
+
 /**
  * Created by Hannes on 20.3.2017.
  */
 
-public class BusLineInfo {
+public class BusLineInfo implements Serializable {
     private String shortName;
     private String name;
     private String departureTime;
@@ -67,5 +69,9 @@ public class BusLineInfo {
 
     public void setArrivalStop(String arrivalStop) {
         this.arrivalStop = arrivalStop;
+    }
+
+    public void addSwitch(String newBus) {
+        shortName = shortName + "/" + newBus;
     }
 }

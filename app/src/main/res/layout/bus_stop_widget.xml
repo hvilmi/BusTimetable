@@ -5,16 +5,20 @@
     android:padding="@dimen/widget_margin">
 
     <TextView
+        android:id="@+id/busLineText1"
+        android:layout_width="@android:dimen/thumbnail_width"
+        android:layout_height="@dimen/cast_libraries_material_featurehighlight_inner_radius"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="149dp"
+        android:text="TextView" />
 
-        style="@android:style/TextAppearance.Medium"
-        android:id="@+id/appwidget_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_margin="4dip"
-        android:text="Static Text">
-
-    </TextView>
-
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/busLineText1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="Button" />
 </RelativeLayout>

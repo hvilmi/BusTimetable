@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private BusLineFinder busLineFinder;
+    public EditText destinationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void testBusLine(View view) {
-        getBusLinesFromCurLocation("Toripakka+E");
+        getBusLinesFromCurLocation("Isojaontie+5+Oulu");
+    }
+
+    public void startBusLineService(View view) {
+        destinationText = (EditText) this.findViewById(R.id.destinationText);
+        
+    }
+    public String getText(){
+        return destinationText.getText().toString();
     }
 }

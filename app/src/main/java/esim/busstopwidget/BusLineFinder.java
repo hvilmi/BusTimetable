@@ -51,16 +51,23 @@ public class BusLineFinder {
                                         JSONArray legs = routes.getJSONObject(i).getJSONArray("legs");
                                         for(int j=0;j < legs.length();j++) {
                                             JSONArray steps = legs.getJSONObject(j).getJSONArray("steps");
+                                            BusLineInfo busLineInfo = null;
                                             for(int k=0;k < steps.length();k++) {
                                                 JSONObject step = steps.getJSONObject(k);
                                                 if(Objects.equals(step.getString("travel_mode"), "TRANSIT")) {
                                                     JSONObject busLineDetails = step.getJSONObject("transit_details");
-                                                    BusLineInfo busLineInfo = new BusLineInfo(busLineDetails.getJSONObject("line").getString("short_name"),
-                                                            busLineDetails.getJSONObject("line").getString("name"),
-                                                            busLineDetails.getJSONObject("departure_time").getString("text"),
-                                                            busLineDetails.getJSONObject("arrival_time").getString("text"),
-                                                            busLineDetails.getJSONObject("departure_stop").getString("name"),
-                                                            busLineDetails.getJSONObject("arrival_stop").getString("name"));
+                                                    if (busLineInfo == null) {
+                                                        busLineInfo = new BusLineInfo(busLineDetails.getJSONObject("line").getString("short_name"),
+                                                                busLineDetails.getJSONObject("line").getString("name"),
+                                                                busLineDetails.getJSONObject("departure_time").getString("text"),
+                                                                busLineDetails.getJSONObject("arrival_time").getString("text"),
+                                                                busLineDetails.getJSONObject("departure_stop").getString("name"),
+                                                                busLineDetails.getJSONObject("arrival_stop").getString("name"));
+                                                    }
+                                                    else {
+                                                        busLineInfo.addSwitch(busLineDetails.getJSONObject("line").getString("short_name"));
+                                                        busLineInfo.setArrivalTime(busLineDetails.getJSONObject("arrival_time").getString("text"));
+                                                    }
                                                     busLineInfoContainer.addBusLine(busLineInfo);
                                                 }
                                                 else if(Objects.equals(step.getString("travel_mode"), "WALKING")) {
